@@ -12,29 +12,34 @@ const SignUp = () => {
   const [agreed, setAgreed] = useState(false);
 
   const handleSignUp = async () => {
+    // Validate form fields and agreement
     if (!email || !password || !confirmPassword || !agreed) {
       toast.error('Please fill out all fields and agree to the privacy policy.');
       return;
     }
+    // Validate email format
     if (!/\S+@\S+\.\S+/.test(email)) {
       toast.error('Please enter a valid email address.');
       return;
     }
+    // Validate password length
     if (password.length < 6) {
       toast.error('Password must be at least 6 characters long.');
       return;
     }
+    // Validate password confirmation
     if (password !== confirmPassword) {
       toast.error('Passwords do not match.');
       return;
     }
 
     try {
+      // Attempt to create user account with Firebase
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success('Registered successfully!');
-      navigate('/signin');
+      navigate('/signin'); // Redirect to signin page on successful registration
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message); // Display Firebase authentication error messages
     }
   };
 
